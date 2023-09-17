@@ -9,17 +9,23 @@ function sortAccountsByLastName(accounts) {
   return sorted;
 }
 
-function getTotalNumberOfBorrows(account, books) {
- let totalBorrows = 0;
-  for(let i = 0; i < books.length;  i++){
-    for (let j = 0; j < books[i].borrows.length; j++) {
-      if (account.id === books[i].borrows[j].id) {
-        totalBorrows += 1;
-      }
+function countBorrowsForAccount(account, book) {
+  return book.borrows.reduce((count, borrow) => {
+    if (borrow.id === account.id) {
+      return count + 1;
     }
+    return count;
+  }, 0);
+}
+
+function getTotalNumberOfBorrows(account, books) {
+  let totalBorrows = 0;
+  for (let i = 0; i < books.length; i++) {
+    totalBorrows += countBorrowsForAccount(account, books[i]);
   }
   return totalBorrows;
 }
+
 
 function getBooksPossessedByAccount(account, books, authors) {
   const inPossesion = [];
