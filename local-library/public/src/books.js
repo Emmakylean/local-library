@@ -18,11 +18,13 @@ function partitionBooksByBorrowedStatus(books) {
 }
 
 function getBorrowersForBook(book, accounts) {
-  return book.borrows.map((borrow)=> {
+  return book.borrows.reduce((result, borrow) => {
     let account = accounts.find((account) => account.id === borrow.id);
-    return {...borrow, ...account };
-  })
-  .slice(0,10);
+    if (account) {
+      result.push({ ...borrow, ...account });
+    }
+    return result;
+  }, []).slice(0, 10);
 }
 
 module.exports = {
